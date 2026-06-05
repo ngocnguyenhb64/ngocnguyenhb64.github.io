@@ -30,7 +30,8 @@ body {
     max-width: 280px;
     border-radius: 0px;
     padding: 25px 20px;
-    box-shadow: none; 
+    box-shadow: none;
+    scoll: none;
 	}
 
     /* Tiêu đề chính "Mục Lục" */
@@ -129,15 +130,26 @@ body {
     }
 
     /* Nội dung danh sách bài tập xổ xuống */
-    .dropdown-content {
+    /* Nội dung danh sách bài tập xổ xuống */
+   .dropdown-content {
     max-height: 0; 
-    overflow-y: auto; /* Thay overflow: hidden bằng dòng này */
+    overflow-y: auto; /* Thay auto */
     transition: max-height 0.4s ease-out; 
     margin-top: 5px;
     padding-left: 0;
     list-style: none;
-    }
 
+	}
+	 /* Ẩn thanh cuộn trên Chrome, Safari và Opera */
+	.dropdown-content::-webkit-scrollbar {
+    display: none;
+	}
+
+	/* Ẩn thanh cuộn trên IE, Edge và Firefox */
+	.dropdown-content {
+    -ms-overflow-style: none;  /* IE và Edge */
+    scrollbar-width: none;  /* Firefox */
+	}
     /* Thêm một chút khoảng cách và thụt vào trong so với menu chính để tạo phân cấp rõ ràng */
     .dropdown-content li {
         margin-bottom: 6px;
