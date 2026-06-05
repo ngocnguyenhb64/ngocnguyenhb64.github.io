@@ -2,34 +2,236 @@
 <html>
 <head>
 <meta charset="utf-8">
-	<base target="frame_Main">
+<base target="frame_Main">
 <title>Content</title>
 <style type="text/css">
+    /* Cấu hình chung cho toàn trang */
+    /* Cấu hình chung cho toàn trang */
 body {
     background-color: #A4B98A;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0px;
+    color: #333;
+    
+    /* THÊM 2 DÒNG NÀY ĐỂ BẬT THANH CUỘN KHI TRANH QUÁ DÀI */
+    height: 100vh;
+    overflow-y: auto; 
+    box-sizing: border-box;
+	-ms-overflow-style: none;  
+    scrollbar-width: none;
+}
+	body::-webkit-scrollbar {
+    display: none;
+}
+    /* Container của Menu Sidebar */
+    .sidebar-menu {
+    background-color: #A4B98A; 
+    max-width: 280px;
+    border-radius: 0px;
+    padding: 25px 20px;
+    box-shadow: none; 
+	}
+
+    /* Tiêu đề chính "Mục Lục" */
+    .menu-title {
+        font-size: 22px;
+        color: #ffffff;
+        margin-top: 0;
+        margin-bottom: 25px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+        padding-bottom: 10px;
+    }
+
+    /* Tiêu đề các mục con (Mục 1, Mục 2,...) */
+    .section-title {
+        font-size: 14px;
+        color: #2c3e29;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        margin: 20px 0 10px 5px;
+        font-weight: 700;
+    }
+
+    /* Định dạng danh sách (ul) */
+    .menu-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .menu-list li {
+        margin-bottom: 6px;
+    }
+
+    /* Định dạng các đường link (a) */
+    .menu-list a {
+        display: block;
+        color: #ffffff;
+        text-decoration: none;
+        padding: 10px 15px;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 500;
+        transition: all 0.3s ease; 
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Hiệu ứng tương tác khi di chuột vào link */
+    .menu-list a:hover {
+        background-color: #ffffff;
+        color: #5c7245; 
+        padding-left: 20px; 
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    /* ==========================================================
+       CSS ĐƯỢC LÀM MỚI TÙY CHỈNH CHO NÚT BÀI TẬP HTML XỔ XUỐNG
+       ========================================================== */
+    .dropdown-container {
+        margin: 10px 5px;
+        position: relative;
+    }
+
+    /* Nút bấm chính kích hoạt menu (Thiết kế giống Mục 1 & 2 nhưng có mũi tên) */
+    .dropdown-btn {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        color: #ffffff;
+        background-color: rgba(255, 255, 255, 0.15);
+        border: 1.5px solid rgba(255, 255, 255, 0.3);
+        padding: 12px 15px;
+        font-size: 14px;
+        font-weight: 600;
+        border-radius: 8px;
+        cursor: pointer;
+        box-sizing: border-box;
+        transition: all 0.3s ease;
+    }
+
+    .dropdown-btn:hover {
+        background-color: rgba(255, 255, 255, 0.25);
+        border-color: #ffffff;
+    }
+
+    /* Biểu tượng mũi tên xoay khi mở/đóng */
+    .dropdown-btn .arrow {
+        font-size: 11px;
+        transition: transform 0.3s ease;
+    }
+
+    .dropdown-btn.active .arrow {
+        transform: rotate(180deg);
+    }
+
+    /* Nội dung danh sách bài tập xổ xuống */
+    .dropdown-content {
+    max-height: 0; 
+    overflow-y: auto; /* Thay overflow: hidden bằng dòng này */
+    transition: max-height 0.4s ease-out; 
+    margin-top: 5px;
+    padding-left: 0;
+    list-style: none;
+    }
+
+    /* Thêm một chút khoảng cách và thụt vào trong so với menu chính để tạo phân cấp rõ ràng */
+    .dropdown-content li {
+        margin-bottom: 6px;
+        padding-left: 10px; 
+    }
+
+    /* Áp dụng đúng giao diện và hiệu ứng hover của mục 1 và 2 cho các bài tập bên trong */
+    .dropdown-content a {
+        display: block;
+        color: #ffffff;
+        text-decoration: none;
+        padding: 10px 15px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        background-color: rgba(255, 255, 255, 0.08);
+        transition: all 0.3s ease;
+    }
+
+    .dropdown-content a:hover {
+        background-color: #ffffff;
+        color: #5c7245;
+        padding-left: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+body,td,th {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 </style>
 </head>
 
 <body>
-	<h3>Mục Lục</h3>
-	<h3>MỤC 1</h3>
-	<ul>
-		<li><a href="Bai1_1/index.html">Bài 1.1</a></li>
-		<li><a href="Bai1_2_Excite/index.html">Bài 1.2</a></li>
-		<li><a href="Bai 1_3 _ Free_com/index.html">Bài 1.3</a></li>
-		<li><a href="Bai1_4 _Scaal/index.html">Bài 1.4</a></li>
-		<li><a href="Bai 1_5 _ Phieu dang ky/index.html">Bài 1.5</a></li>
-	</ul>
-	<h3>MỤC 2</h3>
-	<ul>
-		<li><a href="Bai 2_1 - online/index.html">Bài 2.1</a></li>
-		<li><a href="Bai 2_2 _Hoacanh/index.html">Bài 2.2</a></li>
-		<li><a href="Bai 2_3_CLB My Thuat/index.html">Bài 2.3</a></li>
-	</ul>
-	<h3>Bài tập HTML</h3>
-	<ul>
-		<li><a href="HTML/Tonghop.html">Tổng hợp bài HTML</a></li>
-	</ul>
+
+<div class="sidebar-menu">
+        <h2 class="menu-title">Mục Lục</h2>
+        
+        <div class="section-title">Mục 1</div>
+        <ul class="menu-list">
+            <li><a href="Bai1_1/index.html">Bài 1.1</a></li>
+            <li><a href="Bai1_2_Excite/index.html">Bài 1.2</a></li>
+            <li><a href="Bai 1_3 _ Free_com/index.html">Bài 1.3</a></li>
+            <li><a href="Bai 1_4 _Scaal/index.html">Bài 1.4</a></li>
+            <li><a href="Bai 1_5 _ Phieu dang ky/index.html">Bài 1.5</a></li>
+        </ul>
+        
+        <div class="section-title">Mục 2</div>
+        <ul class="menu-list">
+            <li><a href="Bai 2_1 - online/index.html">Bài 2.1</a></li>
+            <li><a href="Bai2/Bai 2_2 _Hoacanh/index.html">Bài 2.2</a></li>
+            <li><a href="Bai2/Bai 2_3_CLB My Thuat/index.html">Bài 2.3</a></li>
+        </ul>
+        
+        <div class="section-title">Bài tập HTML</div>
+  <div class="dropdown-container">
+            <button class="dropdown-btn" onclick="toggleDropdown()">
+                <span>-- Chọn bài tập tổng hợp --</span>
+                <span class="arrow">▼</span>
+            </button>
+            <ul class="dropdown-content" id="htmlDropdown">
+                <li><a href="HTML/BT1_Wellcome.html">Bài 1. Welcom</a></li>
+                <li><a href="HTML/BT2_Cohaimo.html">Bài 2. Cô hái mơ</a></li>
+                <li><a href="HTML/BT3_ChisoTrenduoi.html">Bài 3. Chỉ số trên dưới</a></li>
+                <li><a href="HTML/BT4_Kyhieudacbiet.html">Bài 4. Ký hiệu đặc biệt</a></li>
+                <li><a href="HTML/BT5_Hieuungvb.html">Bài 5. Hiệu ứng văn bản</a></li>
+                <li><a href="HTML/BT6_ChuongTrinhDTWeb1.html">Bài 6. CHương tình duyệt Web 1 </a></li>
+                <li><a href="HTML/BT7_ChuongTrinhDTWeb2.html">Bài 7. CHương tình duyệt Web 2</a></li>
+                <li><a href="HTML/BT8_ChuongTrinhDTWed.html">Bài 8. Chương trình ĐT Web</a></li>
+                <li><a href="HTML/BT9_ChuongTrinhDTTHVP.html">Bài 9. Chương trình ĐT THVP</a></li>
+                <li><a href="HTML/BT10_TaisanBill.html">Bài 10. Tài sản Bill Gates</a></li>
+                <li><a href="HTML/Bai11_Nhacnen.html">Bài 11. Nhạc nền</a></li>
+                <li><a href="HTML/BT12_ChuongTrinhDaoTao.html">Bài 12.1 Chương trình ĐT Web</a></li>
+                <li><a href="HTML/BT12_ChuongTrinhDTWeb.html">Bài 12.2 Chương trình ĐT Web</a></li>
+                <li><a href="HTML/BT13_DanhBaWeb.html">Bài 13. Danh bạ Web</a></li>
+                <li><a href="HTML/BT14_Albumnhac.html">Bài 14. Album nhạc</a></li>
+                <li><a href="HTML/BT15_KetQuaHocTap.html">Bài 15. Kết quả học tập</a></li>
+            </ul>
+        </div>
+  </div>
+
+<script type="text/javascript">
+        function toggleDropdown() {
+            var dropdown = document.getElementById("htmlDropdown");
+            var button = document.querySelector(".dropdown-btn");
+            
+            // Toggle class 'active' để xoay mũi tên
+            button.classList.toggle("active");
+            
+            // Xử lý hiệu ứng trượt đóng/mở dựa trên thuộc tính scrollHeight
+            if (dropdown.style.maxHeight && dropdown.style.maxHeight !== "0px") {
+                dropdown.style.maxHeight = "0px";
+            } else {
+                dropdown.style.maxHeight = dropdown.scrollHeight + "px";
+            }
+        }
+    </script>
 </body>
 </html>
