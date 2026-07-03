@@ -1,22 +1,337 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="vi">
 <head>
-<meta charset="utf-8">
-<title>Untitled Document</title>
-</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Player with Dynamic Artwork</title>
+    <style>
+        /* Reset cơ bản và thiết lập nền */
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #150a21 0%, #2b1744 50%, #1d335b 100%);
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
 
+        /* Giao diện chính của Player */
+        .player-container {
+            display: flex;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 750px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            margin-bottom: 30px;
+        }
+
+        /* Phần ảnh bìa bên trái */
+        .artwork {
+            width: 45%;
+            background: #0a0510;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* Vòng tròn neon chứa hình ảnh bài hát */
+        .neon-circle {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 
+                0 0 20px rgba(255, 41, 117, 0.5),
+                inset 0 0 20px rgba(255, 41, 117, 0.5),
+                0 0 40px rgba(66, 133, 244, 0.5),
+                inset 0 0 40px rgba(66, 133, 244, 0.5);
+            
+            /* CSS Cập nhật để hiển thị ảnh mượt mà */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            
+            
+            /* Ảnh mặc định khi chưa chọn bài nào (sử dụng màu gradient tối) */
+            background-image: radial-gradient(circle, #2b1744 30%, #0a0510 100%);
+        }
+
+        /* Phần thông tin và điều khiển bên phải */
+        .player-controls-section {
+            width: 55%;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Tiêu đề bài hát */
+        .track-info h2 {
+            margin: 0;
+            font-size: 22px;
+            background: rgba(255, 255, 255, 0.15);
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .track-info p {
+            margin: 10px 0 0 0;
+            font-size: 14px;
+            color: #b3b3b3;
+            background: rgba(255, 255, 255, 0.05);
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+        }
+
+        /* Thanh tiến trình */
+        .progress-area {
+            margin-top: 40px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .time {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 4px 8px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .progress-bar {
+            flex-grow: 1;
+            height: 40px;
+            -webkit-appearance: none;
+            background: transparent;
+            outline: none;
+        }
+        
+        .progress-bar::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+        .progress-bar::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 14px;
+            width: 14px;
+            border-radius: 50%;
+            background: #fff;
+            margin-top: -4px;
+            cursor: pointer;
+        }
+
+        /* Cụm nút điều khiển */
+        .controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            background: #000;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover { transform: scale(1.1); }
+        .btn-small { width: 35px; height: 35px; font-size: 12px; }
+        .btn-med { width: 45px; height: 45px; font-size: 16px; }
+        .btn-large { width: 60px; height: 60px; font-size: 24px; }
+
+        .audio-specs {
+            text-align: right;
+            font-size: 10px;
+            color: #888;
+            margin-top: 20px;
+        }
+
+        /* Danh sách nhạc */
+        .box {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 20px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 710px;
+        }
+
+        .box h2 {
+            margin-top: 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 10px;
+        }
+
+        .playlist-item {
+            display: block;
+            color: #ccc;
+            text-decoration: none;
+            padding: 10px;
+            margin-bottom: 5px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .playlist-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            padding-left: 15px; /* Hiệu ứng nhích nhẹ sang phải khi di chuột */
+        }
+    </style>
+</head>
 <body>
-	
+
+    <audio id="main-audio" src=""></audio>
+
+    <div class="player-container">
+        <div class="artwork">
+            <div class="neon-circle" id="player-cover"></div>
+        </div>
+        
+        <div class="player-controls-section">
+            <div class="track-info">
+                <h2 id="current-title">Chưa chọn bài hát</h2>
+                <p id="current-artist">Nhạc Online</p>
+            </div>
+
+            <div class="progress-area">
+                <span class="time" id="current-time">0:00</span>
+                <input type="range" class="progress-bar" id="progress-bar" value="0" min="0" max="100">
+                <span class="time" id="total-time">0:00</span>
+            </div>
+
+            <div class="controls">
+                <button class="btn btn-small">&#9198;</button>
+                <button class="btn btn-med" onclick="rewind()">&#9194;</button>
+                <button class="btn btn-large" id="play-pause-btn" onclick="togglePlay()">&#9654;</button>
+                <button class="btn btn-med" onclick="forward()">&#9193;</button>
+                <button class="btn btn-small">&#9197;</button>
+            </div>
+
+            <div class="audio-specs" id="specs">
+                00.0KHZ 000KBPS
+            </div>
+        </div>
+    </div>
+
     <div class="box">
         <h2>Nhạc Online</h2>
-
-        <p>
-            <a href="../Sounds/nhac - (320 Kbps).mp3" onclick="playMusic('nhac1.mp3')">Magic</a><br>
-            <a href="../Sounds/nhac1 - (320 Kbps).mp3" onclick="playMusic('nhac2.mp3')">This place has me</a><br>
-			<a href="../Sounds/nhac - (320 Kbps).mp3" onclick="playMusic('nhac1.mp3')">Warm wind scarf</a><br>
-			<a href="../Sounds/nhac 4 - (320 Kbps).mp3" onclick="playMusic('nhac4.mp3')">Who will take me home</a><br>
-			<a href="../Sounds/nhac 4 - (320 Kbps).mp3" onclick="playMusic('nhac4.mp3')">Pink card</a>
-      </p>
+        <div id="playlist">
+            <a href="#" class="playlist-item" onclick="loadAndPlay(this, '../Sounds/nhac - (320 Kbps).mp3', 'Magic', '../Sounds/nhac.png')">Magic</a>
+            <a href="#" class="playlist-item" onclick="loadAndPlay(this, '../Sounds/nhac1 - (320 Kbps).mp3', 'This place has me', '../Sounds/nhac1.png')">This place has me</a>
+            <a href="#" class="playlist-item" onclick="loadAndPlay(this, '../Sounds/nhac3 - (320 Kbps).mp3', 'Warm wind scarf', '../Sounds/nhac3.png')">Warm wind scarf</a>
+            <a href="#" class="playlist-item" onclick="loadAndPlay(this, '../Sounds/nhac 4 - (320 Kbps).mp3', 'Who will take me home', '../Sounds/nhac4.png')">Who will take me home</a>
+            <a href="#" class="playlist-item" onclick="loadAndPlay(this, '../Sounds/nhac5 - (128 Kbps).mp3', 'Pink card', '../Sounds/nhac5.png')">Pink card</a>
+        </div>
     </div>
+
+    <script>
+        const audio = document.getElementById('main-audio');
+        const playPauseBtn = document.getElementById('play-pause-btn');
+        const progressBar = document.getElementById('progress-bar');
+        const currentTimeEl = document.getElementById('current-time');
+        const totalTimeEl = document.getElementById('total-time');
+        const titleEl = document.getElementById('current-title');
+        const specsEl = document.getElementById('specs');
+        const playerCover = document.getElementById('player-cover'); // Lấy element vòng tròn
+
+        let isPlaying = false;
+
+        // Hàm tải nhạc và ĐỔI ẢNH NỀN VÒNG TRÒN
+        function loadAndPlay(element, src, title, imgName) {
+            event.preventDefault(); 
+            
+            // 1. Cập nhật tên bài hát
+            titleEl.innerText = title;
+            
+            // 2. Cập nhật ảnh nền cho vòng tròn neon dựa trên tham số imgName truyền vào
+            // Lưu ý: Nếu file ảnh nằm cùng thư mục với file html thì để nguyên 'url(' + imgName + ')'.
+            // Nếu ảnh nằm ở thư mục khác (Ví dụ: thư mục Images) thì sửa thành: `url('../Images/' + imgName)`
+            playerCover.style.backgroundImage = `url('${imgName}')`;
+            
+            // 3. Cập nhật hiển thị bitrate thông số kĩ thuật
+            if(src.includes('128')) {
+                specsEl.innerText = '44.1KHZ 128KBPS MP3';
+            } else {
+                specsEl.innerText = '44.1KHZ 320KBPS MP3';
+            }
+
+            // 4. Chạy file audio
+            audio.src = src;
+            playAudio();
+        }
+
+        // Các hàm xử lý Audio giữ nguyên từ bản trước
+        function togglePlay() {
+            if (!audio.src || audio.src.endsWith(window.location.pathname)) return;
+            if (isPlaying) {
+                audio.pause();
+                playPauseBtn.innerHTML = '&#9654;';
+            } else {
+                audio.play();
+                playPauseBtn.innerHTML = '&#9208;';
+            }
+            isPlaying = !isPlaying;
+        }
+
+        function playAudio() {
+            audio.play();
+            isPlaying = true;
+            playPauseBtn.innerHTML = '&#9208;';
+        }
+
+        function forward() { audio.currentTime += 10; }
+        function rewind() { audio.currentTime -= 10; }
+
+        audio.addEventListener('timeupdate', () => {
+            const currentTime = audio.currentTime;
+            const duration = audio.duration;
+            if (duration) {
+                progressBar.value = (currentTime / duration) * 100;
+                currentTimeEl.innerText = formatTime(currentTime);
+                totalTimeEl.innerText = formatTime(duration);
+            }
+        });
+
+        progressBar.addEventListener('input', () => {
+            const duration = audio.duration;
+            if (duration) { audio.currentTime = (progressBar.value / 100) * duration; }
+        });
+
+        audio.addEventListener('ended', () => {
+            isPlaying = false;
+            playPauseBtn.innerHTML = '&#9654;';
+            progressBar.value = 0;
+            currentTimeEl.innerText = "0:00";
+        });
+
+        function formatTime(seconds) {
+            let min = Math.floor(seconds / 60);
+            let sec = Math.floor(seconds % 60);
+            if (sec < 10) { sec = `0${sec}`; }
+            return `${min}:${sec}`;
+        }
+    </script>
 </body>
 </html>
