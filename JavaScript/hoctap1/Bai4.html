@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lời chào theo thời gian</title>
+    <style>
+        /* Cấu hình chung */
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background 0.8s ease; /* Hiệu ứng chuyển màu mượt mà */
+        }
+
+        /* Khung hiển thị lời chào (Glassmorphism) */
+        .greeting-card {
+            background-color: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 50px 70px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .greeting-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 38px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        p {
+            font-size: 18px;
+            margin-top: 12px;
+            color: #444;
+            font-weight: 500;
+        }
+
+        /* --- BẢNG MÀU PASTEL THEO BUỔI --- */
+
+        /* 1. Buổi sáng */
+        body.morning {
+            background: linear-gradient(135deg, #FFDEE9 0%, #B5FFFC 100%);
+        }
+        body.morning h1 { color: #FF8BA7; }
+
+        /* 2. Buổi trưa / chiều */
+        body.afternoon {
+            background: linear-gradient(135deg, #E0C3FC 0%, #8EC5FC 100%);
+        }
+        body.afternoon h1 { color: #5B86E5; }
+
+        /* 3. Buổi tối */
+        body.evening {
+            background: linear-gradient(135deg, #9795F0 0%, #FBC8D4 100%);
+        }
+        body.evening h1 { color: #6D68F2; }
+
+    </style>
+</head>
+
+<body>
+    <!-- Khung chứa nội dung -->
+    <div class="greeting-card">
+        <div class="icon" id="time-icon">✨</div>
+        <h1 id="greeting-text">Đang tải...</h1>
+        <p id="time-desc"></p>
+    </div>
+
+    <script>
+        // 1. Lấy thời gian hiện tại
+        var d = new Date();
+        var time = d.getHours();
+        
+        // 2. Định danh các phần tử HTML cần thao tác
+        var body = document.body;
+        var textEl = document.getElementById("greeting-text");
+        var iconEl = document.getElementById("time-icon");
+        var descEl = document.getElementById("time-desc");
+
+        // 3. Xử lý logic hiển thị theo giờ
+        if (time < 10) {
+            // Từ 0h đến 9h59
+            body.classList.add("morning");
+            textEl.innerText = "Chào buổi sáng";
+            iconEl.innerText = "🌅";
+            descEl.innerText = "Chúc bạn một ngày mới tràn đầy năng lượng!";
+        } 
+        else if (time < 17) {
+            // Từ 10h đến 16h59
+            body.classList.add("afternoon");
+            textEl.innerText = "Chào buổi chiều";
+            iconEl.innerText = "☀️";
+            descEl.innerText = "Chúc bạn một buổi chiều làm việc hiệu quả!";
+        } 
+        else {
+            // Từ 17h đến 23h59
+            body.classList.add("evening");
+            textEl.innerText = "Chào buổi tối";
+            iconEl.innerText = "🌙";
+            descEl.innerText = "Chúc bạn một buổi tối thư giãn và ấm áp!";
+        }
+    </script>
+</body>
+</html>

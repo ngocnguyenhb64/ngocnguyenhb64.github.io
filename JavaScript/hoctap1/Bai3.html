@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <title>Bài 3. Làm quen với các phép toán</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', 'Segoe UI', cursive, sans-serif;
+            background-color: #FFFEBD; /* Vàng nhạt */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .math-card {
+            background-color: #ffffff;
+            border: 4px dashed #7AB276; /* Xanh lá sáng */
+            border-radius: 20px;
+            padding: 25px;
+            width: 380px;
+            box-shadow: 0 8px 0 #EBD586; /* Vàng cát */
+        }
+
+        .math-card h3 {
+            color: #4F8557; /* Xanh lá đậm */
+            margin-top: 0;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 26px;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        td {
+            padding: 8px 5px;
+            color: #4F8557; /* Xanh lá đậm */
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px 12px;
+            border: 3px solid #EBD586; /* Vàng cát */
+            border-radius: 15px; 
+            font-size: 16px;
+            outline: none;
+            background-color: #ffffff;
+            text-align: center;
+            color: #4F8557; /* Xanh lá đậm */
+            font-weight: bold;
+            box-sizing: border-box; 
+        }
+
+        input[type="text"]:focus {
+            background-color: #ffffff;
+            border-color: #FFEF37; /* Vàng tươi */
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+        }
+
+        input[type="button"] {
+            flex: 1;
+            padding: 10px 0;
+            background-color: #7AB276; /* Xanh lá sáng */
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #4F8557; /* Xanh lá đậm */
+            transition: all 0.1s;
+        }
+
+        input[type="button"]:hover {
+            background-color: #FFEF37; /* Vàng tươi */
+            color: #4F8557; 
+        }
+
+        input[type="button"]:active {
+            transform: translateY(4px); 
+            box-shadow: 0 0px 0 #4F8557; 
+        }
+
+        #ketqua {
+            margin: 0;
+            font-weight: bold;
+            color: #4F8557; /* Xanh lá đậm */
+            font-size: 24px;
+        }
+        
+        body, td, th {
+            font-family: "Comic Sans MS", "Segoe UI", cursive, sans-serif;
+        }
+    </style>
+</head>
+<body>
+
+<div class="math-card">
+  <h3>Học lại lớp 1</h3>
+    <table width="104%" border="0">
+        <tbody>
+            <tr>
+                <td width="40%">Nhập số thứ 1 </td>
+                <td width="60%"><input type="text" id="txtsol1" placeholder="0"></td>
+            </tr>
+            <tr>
+                <td>Nhập số thứ 2 </td>
+                <td><input type="text" id="txtso2" placeholder="0"></td>
+            </tr>
+            <tr>
+                <td>Phép toán </td>
+                <td>
+                    <div class="btn-group">
+                        <input type="button" name="cong" id="cong" value="+">
+                        <input type="button" name="tru" id="ru" value="-">
+                        <input type="button" name="nhan" id="nhan" value="x">
+                        <input type="button" name="chia" id="chia" value="/">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Kết quả là:</td>
+                <td><p id="ketqua">?</p></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    var theKetQua = document.getElementById("ketqua");
+
+    // 1. Nút Cộng (+)
+    document.getElementById("cong").onclick = function() {
+        var so1 = Number(document.getElementById("txtsol1").value);
+        var so2 = Number(document.getElementById("txtso2").value);
+        theKetQua.innerHTML = "✨ " + (so1 + so2);
+    };
+
+    // 2. Nút Trừ (-)
+    document.getElementById("ru").onclick = function() {
+        var so1 = Number(document.getElementById("txtsol1").value);
+        var so2 = Number(document.getElementById("txtso2").value);
+        theKetQua.innerHTML = "✨ " + (so1 - so2);
+    };
+
+    // 3. Nút Nhân (x)
+    document.getElementById("nhan").onclick = function() {
+        var so1 = Number(document.getElementById("txtsol1").value);
+        var so2 = Number(document.getElementById("txtso2").value);
+        theKetQua.innerHTML = "✨ " + (so1 * so2);
+    };
+
+    // 4. Xử lý khi bấm nút Chia (/)
+    document.getElementById("chia").onclick = function() {
+        var so1 = Number(document.getElementById("txtsol1").value);
+        var so2 = Number(document.getElementById("txtso2").value);
+
+        // Kiểm tra xem số chia có bằng 0 hay không
+        if (so2 === 0) {
+            theKetQua.innerHTML = "Lỗi: Không thể chia cho 0!";
+        } else {
+            theKetQua.innerHTML = "✨ " + (so1 / so2); 
+        }
+    };
+</script>
+
+</body>
+</html>
