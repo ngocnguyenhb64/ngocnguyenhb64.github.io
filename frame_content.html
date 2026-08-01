@@ -87,24 +87,17 @@
         transition: transform 0.3s ease;
     }
     .dropdown-btn.active .arrow {
-        transform: rotate(90deg); /* Đổi thành 90deg để mũi tên chúi xuống đẹp hơn */
+        transform: rotate(90deg); 
     }
 
     /* Nội dung danh sách bài tập xổ xuống */
     .dropdown-content {
         max-height: 0; 
-        overflow-y: auto;
+        overflow-y: hidden; /* Đổi thành hidden để hiệu ứng mượt hơn */
         transition: max-height 0.4s ease-out; 
         margin-top: 5px;
         padding-left: 0;
         list-style: none;
-    }
-
-    /* Ẩn thanh cuộn */
-    .dropdown-content::-webkit-scrollbar { display: none; }
-    .dropdown-content {
-        -ms-overflow-style: none;  
-        scrollbar-width: none;  
     }
     
     .dropdown-content li {
@@ -130,6 +123,22 @@
         padding-left: 20px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     }
+
+    /* Tuỳ biến style cho nút con lồng nhau để giống với thẻ a */
+    .sub-btn {
+        background-color: rgba(255, 255, 255, 0.08);
+        border: none;
+        padding: 10px 15px;
+        border-radius: 8px;
+        font-weight: 500;
+        color: #ffffff;
+        margin-bottom: 0px;
+    }
+    .sub-btn:hover {
+        background-color: rgba(255, 255, 255, 0.25);
+        color: #ffffff;
+        padding-left: 15px; /* Giữ nguyên padding */
+    }
 </style>
 </head>
 
@@ -140,12 +149,10 @@
         
     <!-- MỤC 1 -->
     <div class="dropdown-container">
-        <!-- Đã thêm 'this' vào toggleDropdown(this) -->
         <div class="section-title dropdown-btn" onclick="toggleDropdown(this)" style="display: flex; align-items: center; cursor: pointer; background: none; border: none; padding: 0; margin: 20px 0 10px 5px; width: auto; justify-content: flex-start; gap: 6px; text-transform: uppercase;">
             <span class="arrow" style="font-size: 10px; transition: transform 0.3s ease; color: #2c3e29;">▶</span>
             <span style="color: #2c3e29; font-weight: 700; letter-spacing: 1.5px;">Mục 1</span>
         </div>
-        <!-- Đã xóa id="htmlDropdown" bị trùng -->
         <ul class="dropdown-content">            
             <li><a href="Bai1_1/index.html">Bài 1.1</a></li>
             <li><a href="Bai1_2_Excite/index.html">Bài 1.2</a></li>
@@ -186,8 +193,8 @@
             <li><a href="HTML/BT3_ChisoTrenduoi.html">Bài 3. Chỉ số trên dưới</a></li>
             <li><a href="HTML/BT4_Kyhieudacbiet.html">Bài 4. Ký hiệu đặc biệt</a></li>
             <li><a href="HTML/BT5_Hieuungvb.html">Bài 5. Hiệu ứng văn bản</a></li>
-            <li><a href="HTML/BT6_ChuongTrinhDTWeb1.html">Bài 6. CHương tình duyệt Web 1 </a></li>
-            <li><a href="HTML/BT7_ChuongTrinhDTWeb2.html">Bài 7. CHương tình duyệt Web 2</a></li>
+            <li><a href="HTML/BT6_ChuongTrinhDTWeb1.html">Bài 6. Chương trình duyệt Web 1 </a></li>
+            <li><a href="HTML/BT7_ChuongTrinhDTWeb2.html">Bài 7. Chương trình duyệt Web 2</a></li>
             <li><a href="HTML/BT8_ChuongTrinhDTWed.html">Bài 8. Chương trình ĐT Web</a></li>
             <li><a href="HTML/BT9_ChuongTrinhDTTHVP.html">Bài 9. Chương trình ĐT THVP</a></li>
             <li><a href="HTML/BT10_TaisanBill.html">Bài 10. Tài sản Bill Gates</a></li>
@@ -199,22 +206,66 @@
             <li><a href="HTML/BT15_KetQuaHocTap.html">Bài 15. Kết quả học tập</a></li>
         </ul>
     </div>
+
+    <!-- MỤC JAVASCRIPT (MỚI THÊM) -->
+    <div class="dropdown-container">
+        <div class="section-title dropdown-btn" onclick="toggleDropdown(this)" style="display: flex; align-items: center; cursor: pointer; background: none; border: none; padding: 0; margin: 20px 0 10px 5px; width: auto; justify-content: flex-start; gap: 6px; text-transform: uppercase;">
+            <span class="arrow" style="font-size: 10px; transition: transform 0.3s ease; color: #2c3e29;">▶</span>
+            <span style="color: #2c3e29; font-weight: 700; letter-spacing: 1.5px;">JavaScript</span>
+        </div>
+        <ul class="dropdown-content">
+            
+            <!-- PHIẾU HỌC TẬP 1 (MENU LỒNG) -->
+            <li>
+                <div class="dropdown-btn sub-btn" onclick="toggleDropdown(this)">
+                    <span>Phiếu học tập 1</span>
+                    <span class="arrow">▶</span>
+                </div>
+                <ul class="dropdown-content">
+                    <li><a href="#">Bài 1</a></li>
+                    <li><a href="#">Bài 2</a></li>
+                    <li><a href="#">Bài 3</a></li>
+                    <li><a href="#">Bài 4</a></li>
+                    <li><a href="#">Bài 5</a></li>
+                </ul>
+            </li>
+
+            <!-- PHIẾU HỌC TẬP 2 (MENU LỒNG) -->
+            <li>
+                <div class="dropdown-btn sub-btn" onclick="toggleDropdown(this)">
+                    <span>Phiếu học tập 2</span>
+                    <span class="arrow">▶</span>
+                </div>
+                <ul class="dropdown-content">
+                    <li><a href="#">Bài 6</a></li>
+                    <li><a href="#">Bài 7</a></li>
+                    <li><a href="#">Bài 8</a></li>
+                    <li><a href="#">Bài 9</a></li>
+                    <li><a href="#">Bài 10</a></li>
+                </ul>
+            </li>
+            
+        </ul>
+    </div>
 </div>
 
 <script type="text/javascript">
-    // Hàm mới nhận vào tham số 'button' (chính là thẻ div đang được click)
     function toggleDropdown(button) {
-        // Tìm thẻ <ul> ngay liền kề phía dưới nút bấm đó
         var dropdown = button.nextElementSibling;
-        
-        // Toggle class 'active' để xoay mũi tên của riêng nút đó
         button.classList.toggle("active");
         
-        // Xử lý hiệu ứng trượt đóng/mở
+        // Kiểm tra xem menu đang mở hay đóng
         if (dropdown.style.maxHeight && dropdown.style.maxHeight !== "0px") {
             dropdown.style.maxHeight = "0px";
         } else {
             dropdown.style.maxHeight = dropdown.scrollHeight + "px";
+        }
+
+        // TỰ ĐỘNG CẬP NHẬT CHIỀU CAO CHO MENU CHA (Hỗ trợ menu lồng nhau)
+        var parentUl = button.closest('ul.dropdown-content');
+        if (parentUl) {
+            // Đặt max-height của thẻ ul cha thành 'none' để nó tự giãn khi menu con mở ra
+            parentUl.style.maxHeight = "none";
         }
     }
 </script>
