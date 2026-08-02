@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tạo diễn hoạt ảnh</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        /* Khung chứa giới hạn khu vực di chuyển */
+        #container {
+            width: 80%;
+            height: 200px;
+            background-color: #e9ecef;
+            margin: 0 auto;
+            position: relative; /* Quan trọng: Để set vị trí tuyệt đối cho ảnh con */
+            overflow: hidden;   /* Giấu phần ảnh khi nó chạy ra ngoài khung */
+            border: 2px solid #ccc;
+            border-radius: 8px;
+        }
+
+        /* Đối tượng sẽ được diễn hoạt (di chuyển) */
+        #myObject {
+            font-size: 40px; /* Dùng icon làm ví dụ */
+            position: absolute; /* Bắt buộc để di chuyển bằng JS */
+            top: 75px; /* Canh giữa theo chiều dọc */
+            left: 0;   /* Điểm xuất phát */
+        }
+
+        /* Định dạng nút bấm */
+        .controls {
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            margin: 0 10px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Diễn hoạt ảnh bằng JavaScript</h2>
+    
+    <div id="container">
+        <!-- Có thể thay div này thành: <img src="xe_hoi.png" id="myObject" width="100" /> -->
+        <div id="myObject">🚗</div>
+    </div>
+
+    <div class="controls">
+        <button onclick="startAnimation()">Bắt đầu</button>
+        <button onclick="stopAnimation()">Dừng lại</button>
+    </div>
+
+    <script>
+        let pos = 0;                  // Vị trí ban đầu
+        let animationInterval;        // Biến lưu trữ vòng lặp thời gian
+        const obj = document.getElementById("myObject");
+        const containerWidth = document.getElementById("container").clientWidth;
+
+        // Hàm xử lý từng khung hình (frame)
+        function frame() {
+            pos += 2; // Tăng vị trí lên 2px mỗi lần chạy (Tốc độ)
+            
+            // Nếu xe chạy qua khỏi cạnh phải của khung, cho nó vòng lại bên trái
+            if (pos > containerWidth) {
+                pos = -50; 
+            }
+            
+            // Áp dụng vị trí mới vào thuộc tính CSS 'left'
+            obj.style.left = pos + 'px';
+        }
+
+        // Hàm bắt đầu diễn hoạt
+        function startAnimation() {
+            // Xóa vòng lặp cũ trước khi tạo mới để tránh lỗi click nhiều lần xe chạy quá nhanh
+            clearInterval(animationInterval); 
+            
+            // Gọi hàm frame() lặp đi lặp lại sau mỗi 15 mili-giây
+            animationInterval = setInterval(frame, 15); 
+        }
+
+        // Hàm dừng diễn hoạt
+        function stopAnimation() {
+            // Hủy vòng lặp thời gian
+            clearInterval(animationInterval);
+        }
+    </script>
+
+</body>
+</html>
