@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đồng hồ kỹ thuật số có giây và ngày tháng</title>
+    <style>
+        body {
+            background-color: #f0f0f0; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Vỏ ngoài cùng của đồng hồ */
+        #clock-wrapper {
+            background-color: #f7f1e6; 
+            padding: 40px 50px;
+            border-radius: 12px; 
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); 
+            display: flex;
+            flex-direction: column; /* Xếp dọc giờ và ngày */
+            align-items: center;
+            gap: 25px; 
+        }
+
+        /* Container chứa các con số thời gian */
+        #time-screen {
+            display: flex;
+            align-items: center;
+            gap: 10px; 
+        }
+
+        /* Hiển thị ngày tháng */
+        #date-screen {
+            font-size: 22px;
+            color: #333;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            background: rgba(50, 50, 50, 0.05);
+            padding: 10px 20px;
+            border-radius: 6px;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .digit-group {
+            display: flex;
+            gap: 15px; 
+        }
+
+        .digit-container {
+            width: 70px; 
+            height: 120px; 
+            position: relative; 
+        }
+
+        .segment {
+            background-color: rgba(50, 50, 50, 0.05); 
+            position: absolute;
+            transition: background-color 0.1s ease;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05); 
+            border-radius: 10px;
+        }
+
+        .segment.on {
+            background-color: #333; 
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); 
+        }
+
+        /* Vị trí các nét (segment) */
+        .seg-a { top: 0; left: 10px; width: 50px; height: 10px; } /* Trên */
+        .seg-b { top: 10px; left: 60px; width: 10px; height: 50px; } /* Trên-phải */
+        .seg-c { top: 70px; left: 60px; width: 10px; height: 50px; } /* Dưới-phải */
+        .seg-d { top: 120px; left: 10px; width: 50px; height: 10px; } /* Dưới */
+        .seg-e { top: 70px; left: 0; width: 10px; height: 50px; } /* Dưới-trái */
+        .seg-f { top: 10px; left: 0; width: 10px; height: 50px; } /* Trên-trái */
+        .seg-g { top: 60px; left: 10px; width: 50px; height: 10px; } /* Giữa */
+
+        /* Dấu hai chấm */
+        .colon {
+            width: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            height: 60px;
+        }
+
+        .colon-dot {
+            width: 10px;
+            height: 10px;
+            background-color: #333;
+            border-radius: 50%;
+            margin: 0 auto;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .colon.blink .colon-dot {
+            opacity: 0.1; 
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="clock-wrapper">
+    <!-- PHẦN HIỂN THỊ THỜI GIAN -->
+    <div id="time-screen">
+        <!-- GIỜ -->
+        <div class="digit-group" id="hours">
+            <div class="digit-container" id="hour1">
+                <div class="segment seg-a"></div><div class="segment seg-b"></div><div class="segment seg-c"></div><div class="segment seg-d"></div><div class="segment seg-e"></div><div class="segment seg-f"></div><div class="segment seg-g"></div>
+            </div>
+            <div class="digit-container" id="hour2">
+                <div class="segment seg-a"></div><div class="segment seg-b"></div><div class="segment seg-c"></div><div class="segment seg-d"></div><div class="segment seg-e"></div><div class="segment seg-f"></div><div class="segment seg-g"></div>
+            </div>
+        </div>
+        
+        <!-- DẤU HAI CHẤM -->
+        <div class="colon">
+            <div class="colon-dot"></div><div class="colon-dot"></div>
+        </div>
+
+        <!-- PHÚT -->
+        <div class="digit-group" id="minutes">
+            <div class="digit-container" id="minute1">
+                <div class="segment seg-a"></div><div class="segment seg-b"></div><div class="segment seg-c"></div><div class="segment seg-d"></div><div class="segment seg-e"></div><div class="segment seg-f"></div><div class="segment seg-g"></div>
+            </div>
+            <div class="digit-container" id="minute2">
+                <div class="segment seg-a"></div><div class="segment seg-b"></div><div class="segment seg-c"></div><div class="segment seg-d"></div><div class="segment seg-e"></div><div class="segment seg-f"></div><div class="segment seg-g"></div>
+            </div>
+        </div>
+
+        <!-- DẤU HAI CHẤM -->
+        <div class="colon">
+            <div class="colon-dot"></div><div class="colon-dot"></div>
+        </div>
+
+        <!-- GIÂY -->
+        <div class="digit-group" id="seconds">
+            <div class="digit-container" id="second1">
+                <div class="segment seg-a"></div><div class="segment seg-b"></div><div class="segment seg-c"></div><div class="segment seg-d"></div><div class="segment seg-e"></div><div class="segment seg-f"></div><div class="segment seg-g"></div>
+            </div>
+            <div class="digit-container" id="second2">
+                <div class="segment seg-a"></div><div class="segment seg-b"></div><div class="segment seg-c"></div><div class="segment seg-d"></div><div class="segment seg-e"></div><div class="segment seg-f"></div><div class="segment seg-g"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PHẦN HIỂN THỊ NGÀY THÁNG (MỚI THÊM) -->
+    <div id="date-screen">
+        <span id="date-text">Đang tải ngày...</span>
+    </div>
+</div>
+
+<script>
+    const digitMaps = {
+        '0': [1, 1, 1, 1, 1, 1, 0],
+        '1': [0, 1, 1, 0, 0, 0, 0],
+        '2': [1, 1, 0, 1, 1, 0, 1],
+        '3': [1, 1, 1, 1, 0, 0, 1],
+        '4': [0, 1, 1, 0, 0, 1, 1],
+        '5': [1, 0, 1, 1, 0, 1, 1],
+        '6': [1, 0, 1, 1, 1, 1, 1],
+        '7': [1, 1, 1, 0, 0, 0, 0],
+        '8': [1, 1, 1, 1, 1, 1, 1],
+        '9': [1, 1, 1, 1, 0, 1, 1]
+    };
+
+    // Mảng tên các thứ trong tuần
+    const dayNames = ["Chủ Nhật", "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy"];
+
+    function updateDigit(digitId, number) {
+        const digitDiv = document.getElementById(digitId);
+        const segmentStates = digitMaps[number];
+        const segments = digitDiv.querySelectorAll('.segment');
+
+        segments.forEach((seg, index) => {
+            if (segmentStates[index] === 1) {
+                seg.classList.add('on');
+            } else {
+                seg.classList.remove('on');
+            }
+        });
+    }
+
+    function updateClock() {
+        const now = new Date();
+        
+        // --- XỬ LÝ THỜI GIAN ---
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0'); 
+
+        updateDigit('hour1', hours[0]);
+        updateDigit('hour2', hours[1]);
+        updateDigit('minute1', minutes[0]);
+        updateDigit('minute2', minutes[1]);
+        updateDigit('second1', seconds[0]);
+        updateDigit('second2', seconds[1]);
+
+        // Làm nhấp nháy 2 dấu hai chấm
+        const colons = document.querySelectorAll('.colon');
+        colons.forEach(colon => colon.classList.toggle('blink'));
+
+        // --- XỬ LÝ NGÀY THÁNG ---
+        const day = dayNames[now.getDay()]; // Lấy thứ
+        const date = String(now.getDate()).padStart(2, '0'); // Lấy ngày
+        const month = String(now.getMonth() + 1).padStart(2, '0'); // Lấy tháng (tháng bắt đầu từ 0)
+        const year = now.getFullYear(); // Lấy năm
+
+        // Cập nhật text hiển thị ngày tháng
+        const dateTextString = `${day}, ${date}/${month}/${year}`;
+        document.getElementById('date-text').textContent = dateTextString;
+    }
+
+    // Chạy lần đầu tiên để tránh bị trễ 1 giây
+    updateClock();
+    // Lặp lại mỗi giây
+    setInterval(updateClock, 1000);
+</script>
+
+</body>
+</html>

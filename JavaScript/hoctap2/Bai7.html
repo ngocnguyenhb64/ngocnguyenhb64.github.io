@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giao diện Bật/Tắt Đèn</title>
+    <style>
+        /* 1. ĐỊNH DẠNG NỀN VÀ CĂN GIỮA TOÀN BỘ MÀN HÌNH */
+        body {
+            /* Tạo màu nền (Dùng màu gradient cho đẹp mắt) */
+            background: linear-gradient(135deg, #ece9e6 0%, #ffffff 100%);
+            margin: 0;
+            font-family: Arial, sans-serif;
+            
+            /* Dùng Flexbox để căn giữa */
+            display: flex;
+            justify-content: center; /* Căn giữa theo chiều ngang */
+            align-items: center;     /* Căn giữa theo chiều dọc */
+            height: 100vh;           /* Chiều cao bằng 100% màn hình */
+        }
+
+        /* 2. TẠO KHUNG CHỨA GIAO DIỆN Ở GIỮA */
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 15px; /* Bo góc khung */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Đổ bóng cho khung nổi lên */
+            
+            /* Căn giữa các thành phần bên trong khung */
+            display: flex;
+            flex-direction: column; /* Xếp dọc các phần tử */
+            align-items: center;
+            gap: 20px; /* Khoảng cách giữa các nút và hình ảnh */
+        }
+
+        /* 3. LÀM ĐẸP CHO CÁC NÚT BẤM */
+        .button-group {
+            display: flex;
+            gap: 15px; /* Khoảng cách giữa nút Bật và Tắt */
+        }
+
+        input[type="button"] {
+            padding: 10px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #333;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+
+        /* Hiệu ứng khi rê chuột vào nút */
+        input[type="button"]:hover {
+            background-color: #555;
+        }
+
+        /* Hiệu ứng khi click vào nút */
+        input[type="button"]:active {
+            transform: scale(0.95);
+        }
+
+        /* Định dạng ảnh (đảm bảo không bị quá to) */
+        img {
+            max-width: 250px;
+            height: auto;
+            border-radius: 10px; /* Bo nhẹ góc của ảnh nếu ảnh có nền */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Khung chứa toàn bộ nội dung -->
+    <div class="container">
+        
+        <!-- Nhóm chứa 2 nút bấm -->
+        <div class="button-group">
+            <input name="tat" type="button" id="tat" value="Tắt" onclick="document.getElementById('my_image').src='JavaScript/images/den_tat.png'" />
+            <input name="mo" type="button" id="mo" value="Mở" onclick="document.getElementById('my_image').src='JavaScript/images/den_sang.png'"/>
+        </div>
+
+        <!-- Hình ảnh bóng đèn -->
+        <img src="images/den_tat.png" name="my_image" id="my_image" alt="Bóng đèn" />
+        
+    </div>
+
+</body>
+</html>
