@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đồng hồ kỹ thuật số có giây</title>
+    <style>
+        body {
+            background-color: #f0f0f0; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        #clock-screen {
+            background-color: #f7f1e6; 
+            padding: 40px;
+            border-radius: 8px; 
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); 
+            display: flex;
+            align-items: center;
+            gap: 10px; 
+        }
+
+        .digit-group {
+            display: flex;
+            gap: 15px; 
+        }
+
+        .digit-container {
+            width: 70px; 
+            height: 120px; 
+            position: relative; 
+        }
+
+        .segment {
+            background-color: rgba(50, 50, 50, 0.05); 
+            position: absolute;
+            transition: background-color 0.1s ease;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05); 
+        }
+
+        .segment.on {
+            background-color: #333; 
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); 
+        }
+
+        /* Vị trí các nét (segment) */
+        .seg-a { top: 0; left: 10px; width: 50px; height: 10px; } /* Trên */
+        .seg-b { top: 10px; left: 60px; width: 10px; height: 50px; } /* Trên-phải */
+        .seg-c { top: 70px; left: 60px; width: 10px; height: 50px; } /* Dưới-phải */
+        .seg-d { top: 120px; left: 10px; width: 50px; height: 10px; } /* Dưới */
+        .seg-e { top: 70px; left: 0; width: 10px; height: 50px; } /* Dưới-trái */
+        .seg-f { top: 10px; left: 0; width: 10px; height: 50px; } /* Trên-trái */
+        .seg-g { top: 60px; left: 10px; width: 50px; height: 10px; } /* Giữa */
+
+        /* Dấu hai chấm (đổi thành class để dùng được nhiều lần) */
+        .colon {
+            width: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            height: 60px;
+        }
+
+        .colon-dot {
+            width: 10px;
+            height: 10px;
+            background-color: #333;
+            border-radius: 50%;
+            margin: 0 auto;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .colon.blink .colon-dot {
+            opacity: 0.1; 
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="clock-screen">
+    <!-- GIỜ -->
+    <div class="digit-group" id="hours">
+        <div class="digit-container" id="hour1">
+            <div class="segment seg-a"></div><div class="segment seg-b"></div><div class="segment seg-c"></div><div class="segment seg-d"></div><div class="segment seg-e"></div><div class="segment seg-f"></div><div class="segment seg-g"></div>
+        </div>
+        <div class="digit-container" id="hour2">
+            <div class="segment seg-a"></div><div class="segment seg-b"></div><div class="segment seg-c"></div><div class="segment seg-d"></div><div class="segment seg-e"></div><div class="segment seg-f"></div><div class="segment seg-g"></div>
+        </div>
+    </div>
+    
+    <!-- DẤU HAI CHẤM -->
+    <div class="colon">
+        <div class="colon-dot"></div><div class="colon-dot"></div>
+    </div>
+
+    <!-- PHÚT -->
+    <div class="digit-group" id="minutes">
+        <div class="digit-container" id="minute1">
+            <div class="segment seg-a"></div><div class="segment seg-b"></div><div class="segment seg-c"></div><div class="segment seg-d"></div><div class="segment seg-e"></div><div class="segment seg-f"></div><div class="segment seg-g"></div>
+        </div>
+        <div class="digit-container" id="minute2">
+            <div class="segment seg-a"></div><div class="segment seg-b"></div><div class="segment seg-c"></div><div class="segment seg-d"></div><div class="segment seg-e"></div><div class="segment seg-f"></div><div class="segment seg-g"></div>
+        </div>
+    </div>
+
+    <!-- DẤU HAI CHẤM -->
+    <div class="colon">
+        <div class="colon-dot"></div><div class="colon-dot"></div>
+    </div>
+
+    <!-- GIÂY (PHẦN MỚI THÊM) -->
+    <div class="digit-group" id="seconds">
+        <div class="digit-container" id="second1">
+            <div class="segment seg-a"></div><div class="segment seg-b"></div><div class="segment seg-c"></div><div class="segment seg-d"></div><div class="segment seg-e"></div><div class="segment seg-f"></div><div class="segment seg-g"></div>
+        </div>
+        <div class="digit-container" id="second2">
+            <div class="segment seg-a"></div><div class="segment seg-b"></div><div class="segment seg-c"></div><div class="segment seg-d"></div><div class="segment seg-e"></div><div class="segment seg-f"></div><div class="segment seg-g"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const digitMaps = {
+        '0': [1, 1, 1, 1, 1, 1, 0],
+        '1': [0, 1, 1, 0, 0, 0, 0],
+        '2': [1, 1, 0, 1, 1, 0, 1],
+        '3': [1, 1, 1, 1, 0, 0, 1],
+        '4': [0, 1, 1, 0, 0, 1, 1],
+        '5': [1, 0, 1, 1, 0, 1, 1],
+        '6': [1, 0, 1, 1, 1, 1, 1],
+        '7': [1, 1, 1, 0, 0, 0, 0],
+        '8': [1, 1, 1, 1, 1, 1, 1],
+        '9': [1, 1, 1, 1, 0, 1, 1]
+    };
+
+    function updateDigit(digitId, number) {
+        const digitDiv = document.getElementById(digitId);
+        const segmentStates = digitMaps[number];
+        const segments = digitDiv.querySelectorAll('.segment');
+
+        segments.forEach((seg, index) => {
+            if (segmentStates[index] === 1) {
+                seg.classList.add('on');
+            } else {
+                seg.classList.remove('on');
+            }
+        });
+    }
+
+    function updateClock() {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0'); // Lấy thêm giây
+
+        // Cập nhật giờ và phút
+        updateDigit('hour1', hours[0]);
+        updateDigit('hour2', hours[1]);
+        updateDigit('minute1', minutes[0]);
+        updateDigit('minute2', minutes[1]);
+        
+        // Cập nhật giây
+        updateDigit('second1', seconds[0]);
+        updateDigit('second2', seconds[1]);
+
+        // Làm nhấp nháy cả 2 dấu hai chấm
+        const colons = document.querySelectorAll('.colon');
+        colons.forEach(colon => colon.classList.toggle('blink'));
+    }
+
+    updateClock();
+    setInterval(updateClock, 1000);
+</script>
+
+</body>
+</html>
